@@ -8,16 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import simon.unicauca.edu.co.planpop.R;
+import simon.unicauca.edu.co.planpop.RegisterActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Register_cypFragment extends Fragment implements View.OnClickListener {
+public class Register_cypFragment extends Fragment{
 
-    Button bnt_next;
-    Register_IpFragment reg;
+    Button btn_next;
 
     public Register_cypFragment() {
         // Required empty public constructor
@@ -28,18 +29,32 @@ public class Register_cypFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_register_cyp, container, false);
-        bnt_next = (Button) v.findViewById(R.id.btn_nextcyp);
-        bnt_next.setOnClickListener(this);
-
+        initUI(v);
         return v;
     }
+    public void initUI(View v) {
+        final Register_IpFragment regip = new Register_IpFragment();
+        btn_next = (Button) v.findViewById(R.id.btn_nextcyp);
+
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.container, regip);
+                ft.commit();
+            }
+        });
+
+
+    }
+
 
 
     @Override
-    public void onClick(View v) {
-        reg = new Register_IpFragment();
-        android.support.v4.app.FragmentTransaction fT = getFragmentManager().beginTransaction();
-        fT.replace(R.id.container, reg);
-        fT.commit();
+    public void onStart() {
+        super.onStart();
+
     }
+
+
 }
