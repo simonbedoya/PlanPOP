@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="simon.unicauca.edu.co.planpop.Fragments.Register_cypFragment"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Únete a Plan POP"
+        android:gravity="center"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Crea tu cuenta en pocos pasos"
+        android:gravity="center"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Al registrarte, aceptas las condiciones de Plan POP y reconoces haber leido nuestras Politicas de datos, incluida la seccion sobre el uso de cookies. Es posible que recibas notificaciones de Plan POP, pero puedes desactivarlas en cualquier momento."
+        android:gravity="center"/>
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Continuar"
+        android:id="@+id/btn_nextcyp"/>
+
+</LinearLayout>
