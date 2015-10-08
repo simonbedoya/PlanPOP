@@ -1,48 +1,41 @@
 package simon.unicauca.edu.co.planpop;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.parse.Parse;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class RootActivity extends AppCompatActivity {
 
-    Button logout;
-
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_root);
+        getSupportActionBar().hide();
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "8ladccmIM9sV7Fj0LMWBj2nIwIbz0ZtPJffGxO8M", "7X6yfM9fkrif2EQ1JytvKJhrreB3MAUkFTGPCnLX");
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            intent = new Intent(RootActivity.this,MainActivity.class);
+        } else {
+            intent = new Intent(RootActivity.this,LoginActivity.class);
+        }
+        startActivity(intent);
+        finish();
 
-        logout = (Button) findViewById(R.id.btn_logout);
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-
-            }
-        });
-           }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_root, menu);
         return true;
     }
 
@@ -60,6 +53,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

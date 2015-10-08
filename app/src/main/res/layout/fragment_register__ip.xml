@@ -1,10 +1,43 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="simon.unicauca.edu.co.planpop.Fragments.Register_IpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="¿Cuál es tu dirección de correo electrónico?"
+        android:gravity="center"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:textStyle="bold"
+        android:id="@+id/text1"
+        android:layout_margin="20dp"/>
 
-</FrameLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Verificaremos si estás registrado en nuestro sistema"
+        android:gravity="center"
+        android:id="@+id/text2"
+        android:layout_below="@id/text1"
+        android:layout_margin="20dp"
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:textSize="16dp"/>
+    <EditText
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/edt_email"
+        android:hint="Email"
+        android:gravity="center"
+        android:layout_below="@+id/text2"
+        android:layout_centerHorizontal="true"
+        android:inputType="textEmailAddress"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Continuar"
+        android:id="@+id/btn_nextip"
+        android:layout_below="@+id/edt_email"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"/>
+
+</RelativeLayout>
