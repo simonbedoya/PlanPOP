@@ -35,8 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+
         dialog = new ProgressDialog(this);
         dialog.setMessage("Iniciando sesión.....");
+
         user = (EditText) findViewById(R.id.edt_user);
         pass = (EditText) findViewById(R.id.edt_pass);
         login = (Button) findViewById(R.id.btn_login);
@@ -49,18 +51,21 @@ public class LoginActivity extends AppCompatActivity {
 
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(pass.getWindowToken(), 0);
+                dialog.show();
                 muser = user.getText().toString();
                 mpass = pass.getText().toString();
                 if (muser.matches("") || mpass.matches("")){
+                    dialog.hide();
                     Toast toast = Toast.makeText(getApplicationContext(), "Informacion: Por favor llene los campos.", Toast.LENGTH_SHORT);
                     toast.show();
                 }else{
-                    dialog.show();
+
                     ParseUser.logInInBackground(muser, mpass, new LogInCallback() {
 
                         @Override
                         public void done(ParseUser u, ParseException e) {
                             dialog.hide();
+
                             if (u != null) {
 
 

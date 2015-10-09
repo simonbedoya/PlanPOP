@@ -15,6 +15,7 @@ import com.parse.ParseUser;
 public class MainActivity extends AppCompatActivity {
 
     Button logout;
+    TextView txt;
 
 
     @Override
@@ -23,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         logout = (Button) findViewById(R.id.btn_logout);
+        txt = (TextView) findViewById(R.id.txt);
+
+        ParseUser user = new ParseUser();
+        String email  = user.getEmail();
+        txt.setText(email);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

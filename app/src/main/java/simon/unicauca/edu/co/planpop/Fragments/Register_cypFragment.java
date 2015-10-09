@@ -42,20 +42,11 @@ public class Register_cypFragment extends Fragment{
                 android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.container, regip);
                 ft.commit();
-
             }
         });
-
-
     }
-
-
-
     @Override
     public void onStart() {
         super.onStart();
-
     }
-
-
 }
