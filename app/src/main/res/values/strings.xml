@@ -10,4 +10,40 @@
     <string name="title_activity_register">Crear cuenta</string>
     <string name="title_activity_rem_pass">Recuperacion contraseña</string>
     <string name="title_activity_root">PlanPOP</string>
+    <string name="action_add">Agregar</string>
+    <string name="action_search">Buscar</string>
+
+    <string-array name="planes">
+        <item>Comer helado,Simplemente comer,Heladeria,2015,09,24,4,50,AM</item>
+        <item>Cine,Rapido y furioso,Campanario,2015,09,24,4,4,PM</item>
+        <item>Caminata,Deporte sano,Variante,2015,09,24,4,40,AM</item>
+    </string-array>
+
+    <string name="title_activity_add">Crear Plan</string>
+
+    <string name="nombre">Ingresar Nombre</string>
+    <string name="descripcion">Ingresar Descripción</string>
+    <string name="lugar">Lugar</string>
+    <string name="fecha">Fecha</string>
+    <string name="hora">Hora</string>
+
+    <string name="open_nav">Menu abierto</string>
+    <string name="close_nav">Menu Cerrado</string>
+
+
+
+
+    <string name="title_activity_perfil">PerfilActivity</string>
+    <string name="title_activity_mapa">MapaActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_plan">PlanActivity</string>
+    <string name="Datos_cargados">Datos cargados</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cambiar">Cambiar</string>
+    <string name="txt_logout">Salir</string>
+    <string name="txt_login">Iniciar Sesión</string>
+    <string name="username">Nombre de Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="ingresar">Ingresar</string>
+
 </resources>
