@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
 import simon.unicauca.edu.co.planpop.R;
+import simon.unicauca.edu.co.planpop.adapters.PagerAdapter;
 import simon.unicauca.edu.co.planpop.adapters.PlanAdapter;
 import simon.unicauca.edu.co.planpop.models.Plan;
 import simon.unicauca.edu.co.planpop.parse.PlanParse;
@@ -88,9 +89,11 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
 
         planParse = new PlanParse(this);
 
-        planParse.getPlanByPages(PAGE, null);
+        planParse.getAllPlans();
+
+        //planParse.getPlanByPages(PAGE, null);
  //       type = PAGE;
-        planParse.getPlanById("YMjI8yzg5B");
+        //planParse.getPlanById("YMjI8yzg5B");
 
         //list.setOnScrollListener(this);
 

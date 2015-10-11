@@ -5,10 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -18,12 +20,15 @@ import simon.unicauca.edu.co.planpop.Fragments.ListaFragment;
 import simon.unicauca.edu.co.planpop.Fragments.MapsFragment;
 import simon.unicauca.edu.co.planpop.Fragments.TitleFragment;
 import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
+import simon.unicauca.edu.co.planpop.models.Plan;
+import simon.unicauca.edu.co.planpop.parse.SearchParse;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ListaFragment.OnItemSelectedList, MapsFragment.OnLugarSelected {
+public class MainActivity extends AppCompatActivity implements ListaFragment.OnItemSelectedList, MapsFragment.OnLugarSelected, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
     ViewPager pager;
     List<TitleFragment> data;
@@ -59,7 +64,19 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
 
     }
 
+    @Override
+    protected void onResume() {
+
+
+        super.onResume();
+    }
+
     /*@Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     protected void onRestart() {
         adapter.notifyDataSetChanged();
         super.onRestart();
@@ -76,8 +93,16 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        return true;
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        // LISTENER PARA EL EDIT TEXT
+        searchView.setOnQueryTextListener(this);
+
+        // LISTENER PARA LA APERTURA Y CIERRE DEL WIDGET
+        MenuItemCompat.setOnActionExpandListener(searchItem, this);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -93,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
                 break;
 
             case R.id.action_search:
-                Toast.makeText(this,"Buscar",Toast.LENGTH_LONG);
+
                 break;
             case R.id.action_logout:
                 ParseUser.logOut();
@@ -130,4 +155,29 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        String searching = query.toString();
+        SearchParse sparse = new SearchParse();
+        sparse.Search(searching);
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        return true;
+    }
 }
