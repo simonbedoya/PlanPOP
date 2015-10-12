@@ -20,11 +20,11 @@ import simon.unicauca.edu.co.planpop.Fragments.ListaFragment;
 import simon.unicauca.edu.co.planpop.Fragments.MapsFragment;
 import simon.unicauca.edu.co.planpop.Fragments.TitleFragment;
 import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
+import simon.unicauca.edu.co.planpop.adapters.PlanAdapter;
 import simon.unicauca.edu.co.planpop.models.Plan;
 import simon.unicauca.edu.co.planpop.parse.SearchParse;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
     ViewPager pager;
     List<TitleFragment> data;
     PagerAdapter adapter;
+    PlanAdapter adap;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -157,9 +158,10 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        String searching = query.toString();
+        AppUtil.searching = query.toString();
         SearchParse sparse = new SearchParse();
-        sparse.Search(searching);
+        sparse.Search(AppUtil.searching);
+        
 
         return true;
     }

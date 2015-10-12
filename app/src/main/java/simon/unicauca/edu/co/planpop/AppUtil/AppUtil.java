@@ -15,5 +15,7 @@ public class AppUtil {
     public static String username;
     public static String pass;
     public static List<Plan> data;
+    public static List<Plan> search;
     public static int positionSelected;
+    public static String searching;
 }
