@@ -26,7 +26,7 @@ public class SearchParse {
 
     public void Search(String searching){
 
-        AppUtil.search = new ArrayList<Plan>();
+        AppUtil.data = new ArrayList<Plan>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plan");
         query.whereStartsWith("nombre", searching);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -41,7 +41,7 @@ public class SearchParse {
                         p.setDescripcion(objects.get(i).getString("descripcion"));
                         p.setFecha(objects.get(i).getString("fecha"));
                         p.setLugar(objects.get(i).getParseGeoPoint("lugar"));
-                        AppUtil.search.add(p);
+                        AppUtil.data.add(p);
 
 
                     }

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.SearchView;
@@ -22,6 +23,7 @@ import simon.unicauca.edu.co.planpop.Fragments.TitleFragment;
 import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
 import simon.unicauca.edu.co.planpop.adapters.PlanAdapter;
 import simon.unicauca.edu.co.planpop.models.Plan;
+import simon.unicauca.edu.co.planpop.parse.PlanParse;
 import simon.unicauca.edu.co.planpop.parse.SearchParse;
 
 import java.util.ArrayList;
@@ -158,10 +160,16 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        /*Plan p = new Plan();
         AppUtil.searching = query.toString();
         SearchParse sparse = new SearchParse();
         sparse.Search(AppUtil.searching);
-        
+*/      /*PlanParse p = new PlanParse();
+        p.getPlanByName(query.toString());
+
+        lis.onAttach(getApplicationContext());*/
+       // ListaFragment lis = new ListaFragment();
+       // lis.search(query.toString());
 
         return true;
     }

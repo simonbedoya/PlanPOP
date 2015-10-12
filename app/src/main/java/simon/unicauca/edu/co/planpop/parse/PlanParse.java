@@ -27,6 +27,7 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
 
 
 
+
     public interface PlanParseInterface{
          void done(boolean exito);
          void resultPlan(boolean exito, Plan plan);
@@ -83,7 +84,7 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
         ParseObject parseObject = new ParseObject(PLAN);
         parsePlan(parseObject, plan);
         if(plan.getImgPath()!=null){
-            parseObject.put(C_IMAGEN,parseFile);
+            parseObject.put(C_IMAGEN, parseFile);
         }
         parseObject.saveInBackground(this);
 
@@ -163,6 +164,11 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
             query.whereLessThan(C_CREATEAT, last);
         query.orderByDescending(C_CREATEAT);
         query.setLimit(limit);
+        query.findInBackground(this);
+    }
+    public void getPlanByName(String searching){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLAN);
+        query.whereStartsWith("nombre", searching);
         query.findInBackground(this);
     }
 

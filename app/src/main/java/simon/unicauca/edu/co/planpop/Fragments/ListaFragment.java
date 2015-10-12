@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
 import simon.unicauca.edu.co.planpop.R;
@@ -98,6 +99,12 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
         //list.setOnScrollListener(this);
 
         return v;
+    }
+    public void  search (String searching ){
+        Log.d("Prueba", "LLego" + searching);
+        PlanParse planp = new PlanParse(this);
+        planp.getPlanByName(searching);
+        
     }
 
 

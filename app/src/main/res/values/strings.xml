@@ -45,5 +45,6 @@
     <string name="username">Nombre de Usuario</string>
     <string name="password">Contraseña</string>
     <string name="ingresar">Ingresar</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>
