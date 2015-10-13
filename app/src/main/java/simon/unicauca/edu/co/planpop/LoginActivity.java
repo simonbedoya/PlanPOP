@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(pass.getWindowToken(), 0);
-                dialog.show();
+
                 muser = user.getText().toString();
                 mpass = pass.getText().toString();
                 if (muser.matches("") || mpass.matches("")){
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "Informacion: Por favor llene los campos.", Toast.LENGTH_SHORT);
                     toast.show();
                 }else{
-
+                    dialog.show();
                     ParseUser.logInInBackground(muser, mpass, new LogInCallback() {
 
                         @Override
@@ -69,7 +69,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (u != null) {
 
-                                dialog.hide();
+
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
