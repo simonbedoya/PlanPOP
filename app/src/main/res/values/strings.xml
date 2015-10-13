@@ -47,4 +47,6 @@
     <string name="ingresar">Ingresar</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="siguiente">Siguiente</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

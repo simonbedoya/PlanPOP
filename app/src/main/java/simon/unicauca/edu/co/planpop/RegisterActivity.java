@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
 import simon.unicauca.edu.co.planpop.Fragments.Register_cypFragment;
 
 public class RegisterActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
@@ -21,6 +23,7 @@ public class RegisterActivity extends AppCompatActivity implements DialogInterfa
     Register_cypFragment reg;
     AlertDialog close;
     public static String email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,16 @@ public class RegisterActivity extends AppCompatActivity implements DialogInterfa
             Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+    public void r_button(View view){
+        switch (view.getId()){
+            case R.id.h:
+                AppUtil.sex="hombre";
+                break;
+            case R.id.m:
+                AppUtil.sex="mujer";
+                break;
         }
     }
 }

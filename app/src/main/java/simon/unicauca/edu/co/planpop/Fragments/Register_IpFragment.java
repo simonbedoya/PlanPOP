@@ -70,11 +70,17 @@ public class Register_IpFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(edt_email.getWindowToken(), 0);
                 LoginActivity log = new LoginActivity();
-
                 AppUtil.email = edt_email.getText().toString();
-                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.container, reginfo);
-                ft.commit();
+
+                if (AppUtil.email.matches("")){
+                    Toast toast = Toast.makeText(getContext(),"Por favor ingrese correo electronico",Toast.LENGTH_SHORT);
+                    toast.show();
+                }else {
+
+                    android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.container, reginfo);
+                    ft.commit();
+                }
             }
         });
 

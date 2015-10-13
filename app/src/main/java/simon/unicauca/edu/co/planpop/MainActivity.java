@@ -1,16 +1,22 @@
 package simon.unicauca.edu.co.planpop;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ListaFragment.OnItemSelectedList, MapsFragment.OnLugarSelected, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
+public class MainActivity extends AppCompatActivity implements  ListaFragment.OnItemSelectedList, MapsFragment.OnLugarSelected,  MenuItemCompat.OnActionExpandListener {
 
     ViewPager pager;
     List<TitleFragment> data;
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
         MisPLanesFragment misPLanesFragment = new MisPLanesFragment();
         data.add(misPLanesFragment);
 
+
         ListaFragment list = new ListaFragment();
         data.add(list);
 
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
        // parseQuery.whereEqualTo("nombre","franklin");
 
     }
+
 
     @Override
     protected void onResume() {
@@ -104,14 +112,14 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        //MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         // LISTENER PARA EL EDIT TEXT
-        searchView.setOnQueryTextListener(this);
+        //searchView.setOnQueryTextListener(this);
 
         // LISTENER PARA LA APERTURA Y CIERRE DEL WIDGET
-        MenuItemCompat.setOnActionExpandListener(searchItem, this);
+        //MenuItemCompat.setOnActionExpandListener(searchItem, this);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -204,4 +212,6 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
         list.Reload();
         return true;
     }
+
+
 }

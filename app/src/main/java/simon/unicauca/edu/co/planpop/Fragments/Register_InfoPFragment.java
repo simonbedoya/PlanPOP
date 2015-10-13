@@ -47,6 +47,7 @@ public class Register_InfoPFragment extends Fragment implements DialogInterface.
     RadioButton ho,mu;
     AlertDialog close, register_ok;
     ProgressDialog dialog;
+    RegisterActivity ra = new RegisterActivity();
 
 
     public Register_InfoPFragment() {
@@ -66,6 +67,9 @@ public class Register_InfoPFragment extends Fragment implements DialogInterface.
         userr = (EditText) v.findViewById(R.id.edt_user);
         passw = (EditText) v.findViewById(R.id.edt_pass);
         birthdate = (EditText) v.findViewById(R.id.edt_fechan);
+
+
+
 
         Confirmation_close();
         Confirmation_register();
@@ -173,7 +177,7 @@ public class Register_InfoPFragment extends Fragment implements DialogInterface.
     public void Confirmation_register(){
         register_ok = new android.app.AlertDialog.Builder(getActivity())
                 .setTitle("Felicitaciones!!")
-                .setMessage("Bienvenid@!! " + AppUtil.c_name + " a la comunidad PlanPOP, te invitamos a confirmar tu registro via email y acceder a la app.")
+                .setMessage("Bienvenid@!! " + AppUtil.username + " a la comunidad PlanPOP, te invitamos a confirmar tu registro via email y acceder a la app.")
                 .setNegativeButton("Ok", this)
                 .create();
     }

@@ -54,6 +54,8 @@
             android:layout_gravity="center"
             android:layout_marginRight="15dp"
             android:textSize="18dp"
+            android:checked="true"
+            android:onClick="r_button"
             />
         <RadioButton
             android:id="@+id/m"
@@ -63,6 +65,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:textSize="18dp"
+            android:onClick="r_button"
             />
 
     </RadioGroup>
