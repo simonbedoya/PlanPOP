@@ -20,6 +20,14 @@ public class RootActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "8ladccmIM9sV7Fj0LMWBj2nIwIbz0ZtPJffGxO8M", "7X6yfM9fkrif2EQ1JytvKJhrreB3MAUkFTGPCnLX");
+
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             intent = new Intent(RootActivity.this,MainActivity.class);
@@ -28,8 +36,20 @@ public class RootActivity extends AppCompatActivity {
         }
         startActivity(intent);
         finish();
+        super.onStart();
+    }
 
-
+    @Override
+    protected void onRestart() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            intent = new Intent(RootActivity.this,MainActivity.class);
+        } else {
+            intent = new Intent(RootActivity.this,LoginActivity.class);
+        }
+        startActivity(intent);
+        finish();
+        super.onRestart();
     }
 
     @Override
