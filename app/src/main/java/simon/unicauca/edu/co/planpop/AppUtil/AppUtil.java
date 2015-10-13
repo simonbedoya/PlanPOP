@@ -1,7 +1,10 @@
 package simon.unicauca.edu.co.planpop.AppUtil;
 
+import android.content.Context;
+
 import java.util.List;
 
+import simon.unicauca.edu.co.planpop.adapters.PlanAdapter;
 import simon.unicauca.edu.co.planpop.models.Plan;
 
 /**
@@ -18,4 +21,8 @@ public class AppUtil {
     public static List<Plan> search;
     public static int positionSelected;
     public static String searching;
+    public static int flag=0;
+    public static PlanAdapter adapter;
+    public static int aux_asistant=0;
+    public static List<Plan> data_misPlanes;
 }

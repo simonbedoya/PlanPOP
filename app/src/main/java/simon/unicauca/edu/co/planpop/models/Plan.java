@@ -17,6 +17,7 @@ public class Plan {
     private String imagen;
     private String imgPath;
     private ParseGeoPoint lugar;
+    private String direccion;
     private ParseObject user;
 
     private Date createdAt;
@@ -106,5 +107,13 @@ public class Plan {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 }

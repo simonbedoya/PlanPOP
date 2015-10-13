@@ -41,29 +41,22 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddFragment extends Fragment implements View.OnClickListener, PlanParse.PlanParseInterface {
+public class AddFragment extends Fragment implements View.OnClickListener {
 
 
     public  interface ActionListenerAddFragment{
-        void actionLoad(Boolean maps, Boolean finishAdd);
-        void terminarFragment(Boolean finish);
+        void siguiente(String nombre, String descripcion, String fechaHora);
 
     }
-
-    public static final int CAMERA=101;
-    public static final int RESULT_OK = -1;
 
     private int mYear, mMonth, mDay, mHora,mMinuto;
     private String Sfecha,Shora;
 
-    private File ImgF;
-
     ActionListenerAddFragment actionListenerAddFragment;
 
-    ImageView img;
     EditText edit_nombre,edit_descripcion;
     TextView txt_fecha, txt_hora;
-    Button btn_fecha,btn_hora,btn_lugar,btn_aceptar;
+    Button btn_fecha,btn_hora,btn_siguiente;
 
     Context context;
 
@@ -84,18 +77,17 @@ public class AddFragment extends Fragment implements View.OnClickListener, PlanP
         View v;
         v = inflater.inflate(R.layout.fragment_add, container, false);
 
-        img = (ImageView) v.findViewById(R.id.image_add);
         edit_nombre = (EditText) v.findViewById(R.id.nombre);
         edit_descripcion = (EditText) v.findViewById(R.id.descripcion);
         txt_fecha = (TextView) v.findViewById(R.id.fecha);
         txt_hora = (TextView) v.findViewById(R.id.hora);
         btn_fecha = (Button) v.findViewById(R.id.btn_fecha);
         btn_hora = (Button) v.findViewById(R.id.btn_hora);
-        btn_lugar = (Button) v.findViewById(R.id.btn_marcar_lugar);
 
-        btn_aceptar = (Button) v.findViewById(R.id.btn_add);
 
-        //<editor-fold desc="Botton lugar">
+        btn_siguiente = (Button) v.findViewById(R.id.btn_siguienteAddFragment);
+
+        //<editor-fold desc="Botton fecha">
         btn_fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +105,7 @@ public class AddFragment extends Fragment implements View.OnClickListener, PlanP
                                 txt_fecha.setText(Sfecha);
 
                             }
-                },mYear,mMonth,mDay);
+                        },mYear,mMonth,mDay);
                 datePicker.show();
             }
         });
@@ -145,44 +137,28 @@ public class AddFragment extends Fragment implements View.OnClickListener, PlanP
         });
         //</editor-fold>
 
-        btn_lugar.setOnClickListener(this);
-        btn_aceptar.setOnClickListener(this);
 
-        img.setOnClickListener(this);
+        btn_siguiente.setOnClickListener(this);
 
+        //    btn_lugar.setOnClickListener(this);
+        //   btn_lugar = (Button) v.findViewById(R.id.btn_marcar_lugar);
         return v;
     }
 
     @Override
     public void onClick(View v) {
-        FragmentTransaction fT;
-        switch (v.getId()){
-            case R.id.image_add:
+        String name = edit_nombre.getText().toString();
+        String description = edit_descripcion.getText().toString();
+        Sfecha = txt_fecha.getText().toString();
+        Shora = txt_hora.getText().toString();
 
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File dir = new File(Environment.getExternalStorageDirectory().getPath()+"/PLanes");
-
-                if(!dir.isDirectory()){
-                    dir.mkdir();
-                }
-                ImgF = new File(dir, edit_nombre.getText().toString()+".png");
-                Uri uri = Uri.fromFile(ImgF);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(intent, CAMERA);
-
-                break;
-
-            case R.id.btn_marcar_lugar:
-
-                android.support.v4.app.FragmentTransaction ft = getFragmentManager()
-                        .beginTransaction();
-                MapsFragment mapsFragment = new MapsFragment();
-                ft.replace(R.id.add_container1, mapsFragment);
-                ft.commit();
-                actionListenerAddFragment.actionLoad(true,false);
-                break;
-
-            case R.id.btn_add:
+        if(name!= " " && description != " " && Sfecha != "Fecha" && Shora != "Hora") {
+            actionListenerAddFragment.siguiente(name, description, Sfecha + " " + Shora);
+        }
+        else {
+            Toast.makeText(context,"Todos los campos son requeridos", Toast.LENGTH_LONG);
+        }
+            /*case R.id.btn_add:
                 Plan plan = new Plan();
                 plan.setNombre(edit_nombre.getText().toString());
                 plan.setDescripcion(edit_descripcion.getText().toString());
@@ -197,84 +173,10 @@ public class AddFragment extends Fragment implements View.OnClickListener, PlanP
                     e.printStackTrace();
                 }
 
-                actionListenerAddFragment.actionLoad(false,true);
+                actionListenerAddFragment.terminarFragment(true);
 
-                break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CAMERA){
-            if(resultCode == RESULT_OK){
-                img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                try {
-                    scaleImage(800);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-    }
-
-    private void scaleImage(int maxAxis) throws IOException {
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inJustDecodeBounds = true;
-
-        BitmapFactory.decodeFile(ImgF.getPath(), o);
-
-        int w = o.outWidth;
-        int h = o.outHeight;
-
-        int a = w>h?w:h;
-        int sampleSize=1;
-
-        while (a>maxAxis){
-            sampleSize = sampleSize*2;
-            a=a/2;
-        }
-        o.inJustDecodeBounds=false;
-        o.inSampleSize = sampleSize;
-
-        Bitmap b = BitmapFactory.decodeFile(ImgF.getPath(), o);
-
-        ImgF.delete();
-
-        FileOutputStream out = new FileOutputStream(ImgF);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.JPEG,100,stream);
-
-        out.write(stream.toByteArray());
-
-        b.recycle();
-        b=null;
-
-        out.close();
-        stream.close();
-
-        Picasso.with(context).load(ImgF).into(img);
-    }
-
-    @Override
-    public void done(boolean exito) {
-        if(exito){
-            actionListenerAddFragment.terminarFragment(exito);
-        }
-        else
-            Toast.makeText(context,"Error al insertar el plan",Toast.LENGTH_SHORT);
+                break;*/
 
     }
-
-    @Override
-    public void resultPlan(boolean exito, Plan plan) {
-
-    }
-
-    @Override
-    public void resultListPlans(boolean exito, List<Plan> planes) {
-
-    }
-
 
 }

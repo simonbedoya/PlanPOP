@@ -55,13 +55,17 @@ public class PlanAdapter extends BaseAdapter {
         Plan p = (Plan) getItem(position);
 
         TextView nombre = (TextView) v.findViewById(R.id.txt_nombre);
-        nombre.setText(p.getNombre());
+        String name = p.getNombre();
+        String primeraMayuscula = name.charAt(0)+"";
+        primeraMayuscula.toUpperCase();
+        name.replaceFirst(name.charAt(0)+"",primeraMayuscula);
+        nombre.setText(name);
 
         TextView descripcion = (TextView) v.findViewById(R.id.txt_descripcion);
         descripcion.setText(p.getDescripcion());
 
         TextView lugar = (TextView) v.findViewById(R.id.txt_lugar);
-    //    lugar.setText(p.getLugar());
+        lugar.setText("Lugar: "+p.getDireccion());
 
         String[] formatDate = p.getFecha().split(" ");
         String date = formatDate[0];

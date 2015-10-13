@@ -1,5 +1,7 @@
 package simon.unicauca.edu.co.planpop.parse;
 
+import android.util.Log;
+
 import simon.unicauca.edu.co.planpop.models.Plan;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -9,6 +11,8 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayInputStream;
@@ -47,6 +51,7 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
     public static final String C_LUGAR="lugar";
     public static final String C_ID_USER="id_user";
     public static final String C_CREATEAT="createdAt";
+    public static final String C_DIRECCION="direccion";
 
 
     ParseObject parseObject;
@@ -82,6 +87,9 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
 
     private void saveObject(){
         ParseObject parseObject = new ParseObject(PLAN);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        parseObject.put(C_ID_USER, currentUser); //Se obtiene el que tiene la sesion activa
         parsePlan(parseObject, plan);
         if(plan.getImgPath()!=null){
             parseObject.put(C_IMAGEN, parseFile);
@@ -113,13 +121,32 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
 
     }
 
-    public void updatePlan(Plan plan){
-        ParseObject parseObject = new ParseObject(PLAN);
+
+    /*public void updatePlan(Plan plan, final ParseObject iduser){
+        /*ParseObject parseObject = new ParseObject(PLAN);
         parseObject.put(C_ID, plan.getId());
         parsePlan(parseObject, plan);
         parseObject.saveInBackground(this);
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery(PLAN);
 
-    }
+        String id = plan.getId();
+        // Retrieve the object by id
+        query.getInBackground(id, new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data. In this case, only cheatMode and score
+                    // will get sent to the Parse Cloud. playerName hasn't changed.
+                    //ParseRelation<ParseObject> relation = user_relation.getRelation("Asistentes");
+                    //relation.add(iduser);
+                    user_relation.put("Descripcion","Se cambio la descripcion");
+                    user_relation.saveInBackground();
+
+                    Log.d("Mensaje", "Ya guardar");
+                }
+            }
+        });
+    }*/
+
     public void deletePlan(Plan plan, ParseObject lugar){
         ParseObject parseObject = new ParseObject(PLAN);
         parseObject.put(C_ID, plan.getId());
@@ -171,7 +198,12 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
         query.whereStartsWith("nombre", searching);
         query.findInBackground(this);
     }
-
+    public void getPlanUser(){
+        ParseUser parseUser = ParseUser.getCurrentUser();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLAN);
+        query.whereEqualTo(C_ID_USER, parseUser);
+        query.findInBackground(this);
+    }
 
     @Override
     public void done(ParseException e) {
@@ -201,6 +233,7 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
         parseObject.put(C_DESCRIPCION, plan.getDescripcion());
         parseObject.put(C_FECHA, plan.getFecha());
         parseObject.put(C_LUGAR, plan.getLugar());
+        parseObject.put(C_DIRECCION,plan.getDireccion());
        // ParseRelation<ParseObject> relation = parseObject.getRelation(C_ID_LUGAR); // se añade el lugar
        // relation.add(lugar);
 
@@ -213,10 +246,11 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
         plan.setNombre(parseObject.getString(C_NOMBRE));
         plan.setDescripcion(parseObject.getString(C_DESCRIPCION));
         plan.setFecha(parseObject.getString(C_FECHA));
+        plan.setDireccion(parseObject.getString(C_DIRECCION));
 
         // Para obtener el lugar del plan
         ParseGeoPoint parseGeoPoint = parseObject.getParseGeoPoint(C_LUGAR);
-
+        plan.setLugar(parseGeoPoint);
         // Para obtener el id del usuario que creo el plan.
         ParseObject user = parseObject.getParseObject(C_ID_USER);
         plan.setUser(user);

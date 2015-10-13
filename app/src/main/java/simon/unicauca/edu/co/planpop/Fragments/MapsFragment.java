@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,17 +20,24 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import simon.unicauca.edu.co.planpop.R;
+import simon.unicauca.edu.co.planpop.models.Lugar;
+import simon.unicauca.edu.co.planpop.parse.LugarParse;
+
 import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by Frank on 3/10/2015.
  */
-public class MapsFragment extends TitleFragment implements View.OnClickListener, GoogleMap.OnMapLongClickListener {
+public class MapsFragment extends TitleFragment implements View.OnClickListener, GoogleMap.OnMapLongClickListener, LugarParse.LugarParseInterface {
+
 
     public interface OnLugarSelected{
-        public void onLugarSelected(double latitud, double longitud);
+        void onLugarSelected(double latitud, double longitud);
     }
+
+    public static int CAMBIAR_MARKER=-1;
+
 
     OnLugarSelected onLugarSelected;
 
@@ -38,6 +46,12 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
 
     EditText edt_buscar;
     Button btn_buscar_mapa;
+
+    private Marker marker = null;
+    private MarkerOptions markerOptions = null;
+    private LatLng latLng = null;
+    String direccion;
+
 
     public MapsFragment() {
     }
@@ -60,11 +74,44 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
         btn_buscar_mapa.setOnClickListener(this);
 
         setUpMapIfNeeded();
+        LugarParse lugarParse = new LugarParse(this);
+        lugarParse.getAllLugares();
         mMap.setOnMapLongClickListener(this);
 
 
-
         return v;
+    }
+
+    @Override
+    public void resultListLugares(Boolean exito, List<Lugar> lugares) {
+
+        if(exito == true) {
+
+            MarkerOptions markerLugaresOption = new MarkerOptions();
+            LatLng latitudLongitud;
+
+            String nameLugar, direccionLugar;
+            double latitud, longitud;
+
+
+            for (int i = 0; i < lugares.size(); i++) {
+
+                nameLugar = lugares.get(i).getNombre();
+                direccionLugar = lugares.get(i).getDireccion();
+                latitud = lugares.get(i).getUbicacion().getLatitude();
+                longitud = lugares.get(i).getUbicacion().getLongitude();
+
+                latitudLongitud = new LatLng(latitud, longitud);
+                markerLugaresOption.position(latitudLongitud);
+                markerLugaresOption.title(nameLugar + " " + direccionLugar);
+
+                mMap.addMarker(markerLugaresOption);
+
+            }
+        }
+        else {
+            Toast.makeText(context, "ERROR CARGANDO LUGARES", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -78,10 +125,13 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapa)).getMap();
+
+
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
             }
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(2.4448143 ,-76.6147395),13.0f));
         }
     }
 
@@ -100,9 +150,10 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
     public void onClick(View v) {
 
         String localizacion = edt_buscar.getText().toString();
+
         List<Address> addressList = null;
 
-        if(localizacion != null && localizacion != ""){
+        if(!localizacion.equals("")){
             Geocoder geocoder = new Geocoder(context);
             try {
                 addressList = geocoder.getFromLocationName(localizacion, 1);
@@ -110,27 +161,44 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
                 e.printStackTrace();
             }
             Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+            LatLng bus_latLng = new LatLng(address.getLatitude(),address.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(bus_latLng).title(address.getLatitude()+"  "+address.getLongitude()));
 
 
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(bus_latLng));
         }
         else{
-
+            Toast.makeText(context, "No se ingreso ninguna palabra clave", Toast.LENGTH_LONG).show();
         }
 
-    }
-
-    public boolean onMarkerClick(Marker marker) {
-        return false;
     }
 
     @Override
-    public void onMapLongClick(LatLng latLng) {
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-        onLugarSelected.onLugarSelected(latLng.latitude, latLng.longitude);
-    }
-}
+    public void onMapLongClick(LatLng latLng) { // marcar un lugar
 
+        Geocoder geocoderDireccion = new Geocoder(context);
+        List<Address> addresses = null;
+        try {
+            addresses = geocoderDireccion.getFromLocation(latLng.latitude,latLng.longitude,1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Address address = addresses.get(0);
+        direccion = address.getAddressLine(0);
+
+        markerOptions = new MarkerOptions().position(latLng).title(direccion);
+
+        if(marker == null) {
+            this.latLng = latLng;
+            marker = mMap.addMarker(markerOptions);
+        }
+        else {
+            marker.remove();
+            marker = null;
+        }
+
+    }
+
+
+}
 

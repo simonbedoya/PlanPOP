@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.ParseObject;
+
 import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
 import simon.unicauca.edu.co.planpop.R;
 import simon.unicauca.edu.co.planpop.adapters.PagerAdapter;
@@ -28,6 +30,7 @@ import java.util.List;
  */
 public class ListaFragment extends TitleFragment implements AdapterView.OnItemClickListener, PlanParse.PlanParseInterface {
 
+    public static int POSITION=-1;
     static final int PAGE=10;
 /*
     public static final int TYPE_RECENTS=0;
@@ -44,11 +47,11 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
     OnItemSelectedList onItemSelectedList;
 
     ListView list;
-    PlanAdapter adapter;
-    String planes[];
+   // PlanAdapter adapter;
+
     Context context;
 
-    PlanParse planParse;
+    PlanParse planParse= new PlanParse(this);
 
   //  SwipeRefreshLayout refreshLayout;
 
@@ -62,10 +65,10 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
         this.context = context;
         onItemSelectedList = (OnItemSelectedList) context;
         super.onAttach(context);
-        planes = getResources().getStringArray(R.array.planes);
+
         AppUtil.data = new ArrayList<>();
         AppUtil.positionSelected = -1;
-        adapter = new PlanAdapter(context, AppUtil.data);
+        AppUtil.adapter = new PlanAdapter(context, AppUtil.data);
     }
 
     @Override
@@ -84,11 +87,11 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
 */
 
         list = (ListView) v.findViewById(R.id.list);
-        list.setAdapter(adapter);
+        list.setAdapter(AppUtil.adapter);
         list.setOnItemClickListener(this);
-        adapter.notifyDataSetChanged();
+        AppUtil.adapter.notifyDataSetChanged();
 
-        planParse = new PlanParse(this);
+
 
         planParse.getAllPlans();
 
@@ -100,17 +103,21 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
 
         return v;
     }
-    public void  search (String searching ){
-        Log.d("Prueba", "LLego" + searching);
-        PlanParse planp = new PlanParse(this);
-        planp.getPlanByName(searching);
-        
+    public void  search (){
+        Log.d("Prueba", "LLego" + AppUtil.searching);
+        //PlanParse planp = new PlanParse(this);
+        planParse.getPlanByName(AppUtil.searching);
+
     }
+    public void Reload(){
+        planParse.getAllPlans();
+    }
+    //public void Relation(Plan plan, ParseObject userid){planParse.updatePlan(plan, userid);}
 
 
     @Override
     public void onResume() {
-        adapter.notifyDataSetChanged();
+        AppUtil.adapter.notifyDataSetChanged();
         super.onResume();
     }
 
@@ -122,6 +129,9 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         onItemSelectedList.onItemSelectedList(position);
+        POSITION = position;
+        Log.d("POsicion", String.valueOf(position));
+
     }
 
 
@@ -144,28 +154,21 @@ public class ListaFragment extends TitleFragment implements AdapterView.OnItemCl
     @Override
     public void resultListPlans(boolean exito, List<Plan> planes) {
         if (exito == true) {
-            //if(type == TYPE_PAGE){
-                for(int i=0; i<planes.size(); i++){
+
+                AppUtil.data.clear();
+                for (int i = 0; i < planes.size(); i++) {
                     AppUtil.data.add(planes.get(i));
                 }
-            //}
-            /*else if(type == TYPE_RECENTS) {
-                refreshLayout.setRefreshing(false);
-                if (planes.size() > 0) {
-                    for (int i = planes.size() - 1; i >= 0; i--) {
-                        AppUtil.data.add(0, planes.get(i));
-                    }
-                } else {
-                    Toast.makeText(context, R.string.Datos_cargados, Toast.LENGTH_SHORT);
-                }
-            } */
-            adapter.notifyDataSetChanged();
+
+           //PlanAdapter adap = new PlanAdapter(AppUtil.cont,AppUtil.search);
+
         }
         else
             Log.i("resultPLan exito:", "es falso");
 
-
+        AppUtil.adapter.notifyDataSetChanged();
     }
+
     //endregion
 
 /*
