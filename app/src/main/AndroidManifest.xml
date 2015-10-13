@@ -65,10 +65,6 @@
             android:name=".AddActivity"
             android:label="@string/title_activity_add" >
         </activity>
-        <activity
-            android:name=".PerfilActivity"
-            android:label="@string/title_activity_perfil" >
-        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -80,6 +76,9 @@
         <activity
             android:name=".PlanActivity"
             android:label="@string/title_activity_plan" >
+        </activity>
+        <activity android:name=".ProfileActivity"
+            android:label="@string/profile_activity">
         </activity>
     </application>
 

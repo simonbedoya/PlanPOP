@@ -143,6 +143,10 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
                 Log.d("Presiono"," Presiones atras");
                 list.Reload();
                 break;
+            case R.id.action_profile:
+                Intent intent3 = new Intent(this,ProfileActivity.class);
+                startActivity(intent3);
+                break;
             }
 
         return super.onOptionsItemSelected(item);
