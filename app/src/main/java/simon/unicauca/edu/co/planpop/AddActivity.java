@@ -159,11 +159,9 @@ public class AddActivity extends AppCompatActivity implements AddPlanMapsFragmen
 
         LugarParse lugarParse = new LugarParse(this);
         PlanParse planParse = new PlanParse(this);
-
-
-
+        progressDialog.show();
         try {
-            progressDialog.show();
+
             planParse.insertPlan(plan);
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,6 +173,7 @@ public class AddActivity extends AppCompatActivity implements AddPlanMapsFragmen
 
     @Override
     public void done(boolean exito) {
+        progressDialog.cancel();
         progressDialog.hide();
         if(exito == true) {
 

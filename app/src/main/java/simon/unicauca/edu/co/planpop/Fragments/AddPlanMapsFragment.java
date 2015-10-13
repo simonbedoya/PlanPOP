@@ -183,8 +183,9 @@ public class AddPlanMapsFragment extends Fragment implements DialogInterface.OnC
                     String nombreLugar = input.getEditableText().toString();
                     String direccion = ObtenerDireccion(latLng.latitude,latLng.longitude);
 
-                    markerOptions = new MarkerOptions().position(latLng).title(nombreLugar+" "+direccion);
+                    markerOptions = new MarkerOptions().position(latLng).title(nombreLugar+" - "+direccion);
                     marker = mMap.addMarker(markerOptions);
+
 
                 }
             });
@@ -222,12 +223,11 @@ public class AddPlanMapsFragment extends Fragment implements DialogInterface.OnC
     @Override
     public void onClick(DialogInterface dialog, int which) {
 
-        String[] title = marker.getTitle().split(" ");
-        String nombre = title[0];
-
-        String direccion = ObtenerDireccion(marker.getPosition().latitude,marker.getPosition().longitude);
-
         if (options[which] == "Elegir lugar") {
+            String[] title = marker.getTitle().split("-");
+            String nombre = title[0];
+
+            String direccion = ObtenerDireccion(marker.getPosition().latitude,marker.getPosition().longitude);
             onLugarSelected.onLugarSelected(marker.getPosition().latitude,marker.getPosition().longitude, direccion, nombre);
 
         } else if (options[which] == "Cancelar") {

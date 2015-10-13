@@ -18,6 +18,7 @@ import com.parse.SaveCallback;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -122,37 +123,64 @@ public class PlanParse implements SaveCallback, DeleteCallback, FindCallback<Par
     }
 
 
-    /*public void updatePlan(Plan plan, final ParseObject iduser){
-        /*ParseObject parseObject = new ParseObject(PLAN);
-        parseObject.put(C_ID, plan.getId());
-        parsePlan(parseObject, plan);
-        parseObject.saveInBackground(this);
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery(PLAN);
+    public void updatePlan(final Plan plan){
 
-        String id = plan.getId();
-        // Retrieve the object by id
-        query.getInBackground(id, new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
-                    //ParseRelation<ParseObject> relation = user_relation.getRelation("Asistentes");
-                    //relation.add(iduser);
-                    user_relation.put("Descripcion","Se cambio la descripcion");
-                    user_relation.saveInBackground();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLAN);
+        query.getInBackground(plan.getId(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(final ParseObject object, ParseException e) {
 
-                    Log.d("Mensaje", "Ya guardar");
+                if(plan.getImgPath()!=null){
+                    FileInputStream stream = null;
+                    byte[] bytes= null;
+                    try {
+                        stream = new FileInputStream(plan.getImgPath());
+                        bytes = readFully(stream);
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    parseFile = new ParseFile(plan.getNombre()+".jpg",bytes,"image/jpeg");
+                    parseFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e==null)
+                                upObject(object, plan);
+                        }
+                    });
                 }
+                else{
+                    upObject(object,plan);
+                }
+
             }
         });
-    }*/
 
-    public void deletePlan(Plan plan, ParseObject lugar){
-        ParseObject parseObject = new ParseObject(PLAN);
-        parseObject.put(C_ID, plan.getId());
+    }
+    private void upObject(ParseObject parseObject, Plan plan){
+        parsePlan(parseObject, plan);
+        if(plan.getImgPath()!=null){
+            parseObject.put(C_IMAGEN, parseFile);
+        }
+        parseObject.saveInBackground(this);
+
+    }
+
+    public void deletePlan(final Plan plan){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLAN);
+        query.getInBackground(plan.getId(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                delete(object, plan);
+            }
+        });
+    }
+
+    private void delete(ParseObject parseObject, Plan plan){
         parsePlan(parseObject, plan);
         parseObject.deleteInBackground(this);
-
     }
 
     public void getPlanById(String Id){

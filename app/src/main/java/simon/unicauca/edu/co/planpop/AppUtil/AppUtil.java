@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.List;
 
 import simon.unicauca.edu.co.planpop.adapters.PlanAdapter;
+import simon.unicauca.edu.co.planpop.models.Lugar;
 import simon.unicauca.edu.co.planpop.models.Plan;
 
 /**
@@ -25,4 +26,6 @@ public class AppUtil {
     public static PlanAdapter adapter;
     public static int aux_asistant=0;
     public static List<Plan> data_misPlanes;
+    public static List<Lugar> lugares;
+    public static int positionSelectedMisPlanes;
 }

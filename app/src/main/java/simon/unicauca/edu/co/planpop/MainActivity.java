@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ListaFragment.OnItemSelectedList, MapsFragment.OnLugarSelected, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
+public class MainActivity extends AppCompatActivity implements MisPLanesFragment.ActionMisPlanesFragment,ListaFragment.OnItemSelectedList, MapsFragment.OnLugarSelected, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
     ViewPager pager;
     List<TitleFragment> data;
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
         data.add(list);
 
         MapsFragment mapa = new MapsFragment();
+        mapa.init(MapsFragment.LATITUD_POPOYAN, MapsFragment.LONGITUD_POPOYAN, MapsFragment.ZOOM);
         data.add(mapa);
 
         adapter = new PagerAdapter(getSupportFragmentManager(), data);
@@ -207,5 +208,13 @@ public class MainActivity extends AppCompatActivity implements ListaFragment.OnI
     public boolean onMenuItemActionCollapse(MenuItem item) {
         list.Reload();
         return true;
+    }
+
+    @Override
+    public void ItemSeleccionado(int position) {
+        AppUtil.positionSelectedMisPlanes = position;
+        Intent intent = new Intent(this,MisPlanesActivity.class);
+        startActivity(intent);
+
     }
 }

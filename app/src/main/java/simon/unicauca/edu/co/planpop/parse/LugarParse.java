@@ -37,7 +37,7 @@ public class LugarParse implements SaveCallback, FindCallback<ParseObject> {
         ParseObject parseObject= new ParseObject(LUGARES);
         llenarLugar(parseObject, lugar);
         parseObject.saveInBackground(this);
-        }
+    }
 
     public void updateLugar(Lugar lugar){
 

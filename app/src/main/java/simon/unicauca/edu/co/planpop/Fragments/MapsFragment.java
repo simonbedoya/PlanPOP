@@ -19,11 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import simon.unicauca.edu.co.planpop.AppUtil.AppUtil;
 import simon.unicauca.edu.co.planpop.R;
 import simon.unicauca.edu.co.planpop.models.Lugar;
 import simon.unicauca.edu.co.planpop.parse.LugarParse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,13 +33,13 @@ import java.util.List;
  */
 public class MapsFragment extends TitleFragment implements View.OnClickListener, GoogleMap.OnMapLongClickListener, LugarParse.LugarParseInterface {
 
+    public static final double LATITUD_POPOYAN=2.4448143;
+    public static final double LONGITUD_POPOYAN=-76.6147395;
+    public static final float ZOOM=13.0f;
 
     public interface OnLugarSelected{
         void onLugarSelected(double latitud, double longitud);
     }
-
-    public static int CAMBIAR_MARKER=-1;
-
 
     OnLugarSelected onLugarSelected;
 
@@ -52,14 +54,25 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
     private LatLng latLng = null;
     String direccion;
 
+    LugarParse lugarParse = new LugarParse(this);
+
+    double latitud,longitud;
+    float zoom;
 
     public MapsFragment() {
+    }
+
+    public void init(double latitud, double longitud, float zoom){
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.zoom = zoom;
     }
 
     @Override
     public void onAttach(Context context) {
         this.context = context;
         onLugarSelected = (OnLugarSelected) context;
+        AppUtil.lugares = new ArrayList<>();
         super.onAttach(context);
     }
 
@@ -74,7 +87,7 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
         btn_buscar_mapa.setOnClickListener(this);
 
         setUpMapIfNeeded();
-        LugarParse lugarParse = new LugarParse(this);
+
         lugarParse.getAllLugares();
         mMap.setOnMapLongClickListener(this);
 
@@ -95,7 +108,7 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
 
 
             for (int i = 0; i < lugares.size(); i++) {
-
+                AppUtil.lugares.add(lugares.get(i));
                 nameLugar = lugares.get(i).getNombre();
                 direccionLugar = lugares.get(i).getDireccion();
                 latitud = lugares.get(i).getUbicacion().getLatitude();
@@ -117,6 +130,7 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
+        lugarParse.getAllLugares();
         setUpMapIfNeeded();
     }
 
@@ -131,12 +145,15 @@ public class MapsFragment extends TitleFragment implements View.OnClickListener,
             if (mMap != null) {
                 setUpMap();
             }
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(2.4448143 ,-76.6147395),13.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitud ,longitud),zoom));
+        }
+        else if(mMap != null){
+            setUpMap();
         }
     }
 
     private void setUpMap() {
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         mMap.setMyLocationEnabled(true);
 
     }

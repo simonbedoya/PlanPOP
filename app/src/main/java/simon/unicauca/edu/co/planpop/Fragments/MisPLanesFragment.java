@@ -25,13 +25,18 @@ import simon.unicauca.edu.co.planpop.parse.PlanParse;
  */
 public class MisPLanesFragment extends TitleFragment implements AdapterView.OnItemClickListener, PlanParse.PlanParseInterface {
 
+    public interface ActionMisPlanesFragment{
+        void ItemSeleccionado(int position);
+    }
+
+    ActionMisPlanesFragment actionMisPlanesFragment;
 
     ListView list_misPlanes;
     PlanAdapter adapter;
 
     Context context;
 
-    PlanParse planParse;
+    PlanParse planParse = new PlanParse(this);
 
     public MisPLanesFragment() {
         // Required empty public constructor
@@ -39,7 +44,9 @@ public class MisPLanesFragment extends TitleFragment implements AdapterView.OnIt
 
     @Override
     public void onAttach(Context context) {
+        actionMisPlanesFragment = (ActionMisPlanesFragment) context;
         this.context = context;
+        AppUtil.positionSelectedMisPlanes = -1;
         AppUtil.data_misPlanes = new ArrayList<>();
 
         adapter = new PlanAdapter(context, AppUtil.data_misPlanes);
@@ -56,8 +63,9 @@ public class MisPLanesFragment extends TitleFragment implements AdapterView.OnIt
         list_misPlanes.setOnItemClickListener(this);
         adapter.notifyDataSetChanged();
 
-        PlanParse planParse = new PlanParse(this);
+
         planParse.getPlanUser();
+
 
         return v;
     }
@@ -72,7 +80,7 @@ public class MisPLanesFragment extends TitleFragment implements AdapterView.OnIt
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        actionMisPlanesFragment.ItemSeleccionado(position);
     }
 
     @Override
