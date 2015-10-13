@@ -24,7 +24,6 @@ public class RegisterActivity extends AppCompatActivity implements DialogInterfa
     AlertDialog close;
     public static String email;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +49,18 @@ public class RegisterActivity extends AppCompatActivity implements DialogInterfa
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_register, menu);
         return true;
+    }
+    public void r_button(View view){
+        int id = view.getId();
+        switch (id){
+            case R.id.h:
+                AppUtil.sex="hombre";
+                break;
+            case R.id.m:
+                AppUtil.sex="mujer";
+                break;
+        }
+
     }
 
     @Override
@@ -80,16 +91,6 @@ public class RegisterActivity extends AppCompatActivity implements DialogInterfa
             Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();
-        }
-    }
-    public void r_button(View view){
-        switch (view.getId()){
-            case R.id.h:
-                AppUtil.sex="hombre";
-                break;
-            case R.id.m:
-                AppUtil.sex="mujer";
-                break;
         }
     }
 }

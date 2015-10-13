@@ -47,7 +47,6 @@ public class Register_InfoPFragment extends Fragment implements DialogInterface.
     RadioButton ho,mu;
     AlertDialog close, register_ok;
     ProgressDialog dialog;
-    RegisterActivity ra = new RegisterActivity();
 
 
     public Register_InfoPFragment() {
@@ -67,9 +66,6 @@ public class Register_InfoPFragment extends Fragment implements DialogInterface.
         userr = (EditText) v.findViewById(R.id.edt_user);
         passw = (EditText) v.findViewById(R.id.edt_pass);
         birthdate = (EditText) v.findViewById(R.id.edt_fechan);
-
-
-
 
         Confirmation_close();
         Confirmation_register();

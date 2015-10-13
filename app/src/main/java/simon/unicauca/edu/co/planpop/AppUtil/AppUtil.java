@@ -1,7 +1,6 @@
 package simon.unicauca.edu.co.planpop.AppUtil;
 
 import android.content.Context;
-import android.view.View;
 
 import java.util.List;
 
@@ -26,5 +25,4 @@ public class AppUtil {
     public static PlanAdapter adapter;
     public static int aux_asistant=0;
     public static List<Plan> data_misPlanes;
-    public static View v;
 }
